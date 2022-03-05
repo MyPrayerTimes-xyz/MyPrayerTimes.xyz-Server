@@ -1,0 +1,26 @@
+﻿@using Microsoft.AspNetCore.Components.Web
+@namespace MyPrayerTimes.xyz_Server.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+
+      <!-- Meta tags -->
+      <meta charset="utf-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+      <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+      <meta name="viewport" content="width=device-width" />
+    
+    <base href="~/"/>
+    <link href="css/halfmoon-1.1.1/css/halfmoon-variables.min.css" rel="stylesheet" />
+    <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered"/>
+</head>
+<body class="with-custom-webkit-scrollbars with-custom-css-scrollbars dark-mode">
+
+@RenderBody()
+
+<script src="_framework/blazor.server.js"></script>
+<script src="css/halfmoon-1.1.1/js/halfmoon.min.js"></script>
+</body>
+</html>
