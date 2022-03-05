@@ -119,7 +119,7 @@
     private async Task<EsolatResponse?> GetWaktuSolat(string zone)
     {
         var key = $"{DateTime.Now.ToString(Constants.DurationFormat)}_{zone}";
-        var keyBackup = key + "_yearly";
+        // var keyBackup = key + "_yearly";
         EsolatResponse? final;
 
         if (!_serverStorageService.Cache().ContainsKey(key))
