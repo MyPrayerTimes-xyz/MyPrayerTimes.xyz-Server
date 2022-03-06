@@ -2,9 +2,7 @@
   "profiles": {
     "MyPrayerTimes.xyz-Server": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
-      "launchBrowser": true,
-      "applicationUrl": "http://0.0.0.0:2000"
+      "applicationUrl": "http://*:2000"
     }
   }
 }
