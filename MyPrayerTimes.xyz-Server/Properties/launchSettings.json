@@ -2,7 +2,7 @@
   "profiles": {
     "MyPrayerTimes.xyz-Server": {
       "commandName": "Project",
-      "applicationUrl": "http://*:80"
+      "applicationUrl": "http://*:8080"
     }
   }
 }
