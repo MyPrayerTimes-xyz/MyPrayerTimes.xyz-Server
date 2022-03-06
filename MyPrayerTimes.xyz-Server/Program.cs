@@ -9,7 +9,6 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<ServerStorageService>();
 builder.Services.AddSingleton<EsolatApi>();
-builder.Services.AddSingleton<GitHashService>();
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddHttpClient();
 
