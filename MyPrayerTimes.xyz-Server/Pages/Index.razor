@@ -192,19 +192,19 @@
         var key = $"{DateTime.Now.ToString(Constants.DurationFormat)}_{zone}";
         EsolatResponse? final;
 
-        if (!_serverStorageService.Cache().ContainsKey(key))
+        if (!_serverStorageService.ContainsKey(key))
         {
             Enum.TryParse(zone, out ZoneCode zoneCode);
             final = await _esolatApi.GetWaktuSolatAsync(Constants.Zones[zoneCode], Period.Daily);
             
             if (final != null)
-                _serverStorageService.Cache()[key] = final;
+                _serverStorageService.Set(key, final);
             
             Console.WriteLine($"[GET] {DateTime.Now} - {key} - {JsonConvert.SerializeObject(final)}");
         }
         else
         {
-            final = _serverStorageService.Cache()[key];
+            final = _serverStorageService.Get(key);
             Console.WriteLine($"[Cache] {DateTime.Now} - {key} - {JsonConvert.SerializeObject(final)}");
         }
 

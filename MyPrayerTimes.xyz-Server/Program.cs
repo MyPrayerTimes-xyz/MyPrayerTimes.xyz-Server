@@ -7,8 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+builder.Services.AddScoped<EsolatApi>();
 builder.Services.AddSingleton<ServerStorageService>();
-builder.Services.AddSingleton<EsolatApi>();
 builder.Services.AddSingleton<GitHashService>();
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddHttpClient();

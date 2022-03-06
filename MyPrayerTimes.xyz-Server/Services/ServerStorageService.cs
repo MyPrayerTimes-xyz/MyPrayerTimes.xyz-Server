@@ -1,15 +1,30 @@
+using Microsoft.Extensions.Caching.Memory;
 using myprayertimes.esolat.Models;
 
 namespace MyPrayerTimes.xyz_Server.Services;
 
 public class ServerStorageService
 {
-    readonly IDictionary<string, EsolatResponse> _cache;
+    private readonly MemoryCache _cache;
 
     public ServerStorageService()
     {
-        _cache = new Dictionary<string, EsolatResponse>();
+        _cache = new MemoryCache(new MemoryCacheOptions());
+    }
+    
+    public EsolatResponse Get(string key)
+    {
+        return _cache.Get<EsolatResponse>(key);
     }
 
-    public IDictionary<string, EsolatResponse> Cache() => _cache;
+    public void Set(string key, EsolatResponse val)
+    {
+        var cacheExp = DateTime.Today.AddDays(1);
+        _cache.Set(key, val, cacheExp);
+    }
+
+    public bool ContainsKey(string key)
+    {
+        return _cache.TryGetValue(key, out _);
+    }
 }
