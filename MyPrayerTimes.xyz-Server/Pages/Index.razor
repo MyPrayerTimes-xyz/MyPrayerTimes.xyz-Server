@@ -9,6 +9,7 @@
 @inject ServerStorageService _serverStorageService;
 @inject Blazored.LocalStorage.ILocalStorageService _localStorage;
 @inject HttpClient _httpClient;
+@inject GitHashService _gitHashService;
 
 <PageTitle>MyPrayerTimes.xyz</PageTitle>
 
@@ -139,6 +140,9 @@
                 </div>
                 <div class="text-center text-muted font-size-12">
                     Waktu solat dari <a href="//www.nuget.org/profiles/ijat" class="text-white">myprayertimes.esolat</a>
+                </div>
+                <div class="text-center text-muted font-size-12">
+                    Commit #<a href="https://github.com/MyPrayerTimes-xyz">@_gitHashService.GetGitHash()</a>
                 </div>
             </div>
         </div>
