@@ -1,7 +1,6 @@
 @page "/"
 @using myprayertimes.esolat
 @using myprayertimes.esolat.Endpoint
-@using myprayertimes.esolat.Extensions
 @using myprayertimes.esolat.Models
 @using MyPrayerTimes.xyz_Server.Services
 @using Newtonsoft.Json
@@ -10,6 +9,7 @@
 @inject ServerStorageService _serverStorageService;
 @inject Blazored.LocalStorage.ILocalStorageService _localStorage;
 @inject HttpClient _httpClient;
+@inject GitHashService _gitHashService;
 
 <PageTitle>MyPrayerTimes.xyz</PageTitle>
 
@@ -24,8 +24,17 @@
                 </div>
                 
                 <hr/>
-                <div class="text-center mt-20 badge">@CurrentTime?.Date.ToString("yyyy-MM-dd")</div>
-                <div class="text-center mt-20 badge">@CurrentTime?.Hijri</div>
+                
+                @if (CurrentTime != null)
+                {
+                    <div class="text-center mt-20 badge">@CurrentTime?.Date.ToString("yyyy-MM-dd")</div>
+                    <div class="text-center mt-20 badge">@CurrentTime?.Hijri</div>
+                }
+                else
+                {
+                    <div class="text-center mt-20 badge">...</div>
+                    <div class="text-center mt-20 badge">...</div>
+                }
 
                 <div class=" mt-10">
                     <select value="@CurrentCode" onchange="@SetZone" class="form-control">
@@ -41,41 +50,99 @@
                         <tbody>
                         <tr>
                             <td class="text-center">Imsak</td>
-                            <td class="text-center">@CurrentTime?.Imsak.ToString("HH:mm")</td>
+                            @if (CurrentTime != null)
+                            {
+                                <td class="text-center">@CurrentTime?.Imsak.ToString("HH:mm")</td>
+                            }
+                            else
+                            {
+                                <td class="text-center">...</td>
+                            }
                         </tr>
                         <tr>
                             <td class="text-center">Subuh</td>
-                            <td class="text-center">@CurrentTime?.Subuh.ToString("HH:mm")</td>
+                            @if (CurrentTime != null)
+                            {
+                                <td class="text-center">@CurrentTime?.Subuh.ToString("HH:mm")</td>
+
+                            }
+                            else
+                            {
+                                <td class="text-center">...</td>
+                            }
                         </tr>
                         <tr>
                             <td class="text-center">Syuruk</td>
-                            <td class="text-center">@CurrentTime?.Syuruk.ToString("HH:mm")</td>
+                            @if (CurrentTime != null)
+                            {
+                                <td class="text-center">@CurrentTime?.Syuruk.ToString("HH:mm")</td>
+
+                            }
+                            else
+                            {
+                                <td class="text-center">...</td>
+                            }
                         </tr>
                         <tr>
                             <td class="text-center">Zohor</td>
-                            <td class="text-center">@CurrentTime?.Zohor.ToString("HH:mm")</td>
+                            @if (CurrentTime != null)
+                            {
+                                <td class="text-center">@CurrentTime?.Zohor.ToString("HH:mm")</td>
+
+                            }
+                            else
+                            {
+                                <td class="text-center">...</td>
+                            }
                         </tr>
                         <tr>
                             <td class="text-center">Asar</td>
-                            <td class="text-center">@CurrentTime?.Asar.ToString("HH:mm")</td>
+                            @if (CurrentTime != null)
+                            {
+                                <td class="text-center">@CurrentTime?.Asar.ToString("HH:mm")</td>
+
+                            }
+                            else
+                            {
+                                <td class="text-center">...</td>
+                            }
                         </tr>
                         <tr>
                             <td class="text-center">Maghrib</td>
-                            <td class="text-center">@CurrentTime?.Maghrib.ToString("HH:mm")</td>
+                            @if (CurrentTime != null)
+                            {
+                                <td class="text-center">@CurrentTime?.Maghrib.ToString("HH:mm")</td>
+
+                            }
+                            else
+                            {
+                                <td class="text-center">...</td>
+                            }
                         </tr>
                         <tr>
                             <td class="text-center">Isyak</td>
-                            <td class="text-center">@CurrentTime?.Isyak.ToString("HH:mm")</td>
+                            @if (CurrentTime != null)
+                            {
+                                <td class="text-center">@CurrentTime?.Isyak.ToString("HH:mm")</td>
+
+                            }
+                            else
+                            {
+                                <td class="text-center">...</td>
+                            }
                         </tr>
                         </tbody>
                     </table>
                 </div>
                 
-                <div class="text-center text-muted mt-20">
+                <div class="text-center text-muted mt-20 font-size-12">
                     Dibuat oleh <a href="//ijat.my" class="text-white">ijat.my</a>
                 </div>
-                <div class="text-center text-muted">
+                <div class="text-center text-muted font-size-12">
                     Waktu solat dari <a href="//www.nuget.org/profiles/ijat" class="text-white">myprayertimes.esolat</a>
+                </div>
+                <div class="text-center text-muted font-size-12">
+                    Commit #<a href="https://github.com/MyPrayerTimes-xyz">@_gitHashService.GetGitHash()</a>
                 </div>
             </div>
         </div>
@@ -99,6 +166,7 @@
             if (string.IsNullOrEmpty(CurrentCode))
                 await _localStorage.SetItemAsStringAsync("zon", Constants.Zones[ZoneCode.WLY01].ToString());
 
+            StateHasChanged();
             CurrentWs = await GetWaktuSolat(CurrentCode);
             StateHasChanged();
         }
@@ -106,6 +174,9 @@
 
     private async Task SetZone(ChangeEventArgs eventArgs)
     {
+        CurrentTime = null;
+        StateHasChanged();
+        
         var selectedZone = eventArgs.Value?.ToString();
         if (!string.IsNullOrEmpty(selectedZone))
         {
@@ -119,7 +190,6 @@
     private async Task<EsolatResponse?> GetWaktuSolat(string zone)
     {
         var key = $"{DateTime.Now.ToString(Constants.DurationFormat)}_{zone}";
-        // var keyBackup = key + "_yearly";
         EsolatResponse? final;
 
         if (!_serverStorageService.Cache().ContainsKey(key))

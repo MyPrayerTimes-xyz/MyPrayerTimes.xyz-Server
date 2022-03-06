@@ -9,11 +9,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\myprayertimes.esolat\myprayertimes.esolat.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
       <PackageReference Include="Blazored.LocalStorage" Version="4.2.0" />
+      <PackageReference Include="MSBuildGitHash" Version="2.0.2">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="myprayertimes.esolat" Version="1.0.0" />
       <PackageReference Include="Tailwind.Extensions.AspNetCore" Version="1.0.0-beta3" />
     </ItemGroup>
 
